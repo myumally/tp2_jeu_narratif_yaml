@@ -1,9 +1,7 @@
-use serde_yaml;
-use tp2_jeu_narratif_yaml::parser::{Story};
+use tp2_jeu_narratif_yaml::{parser::{Story, story_from_file}, story_error::StoryError};
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let raw = std::fs::File::open("story.yaml")?;
-    let cfg: Story = serde_yaml::from_reader(raw)?;
+fn main() -> Result<(), StoryError> {
+    let cfg: Story = story_from_file("story.yaml")?;
     println!("{cfg:?}");
     Ok(())
 }
