@@ -10,7 +10,17 @@ pub struct Story {
     scenes: Option<Vec<Scene>>
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+impl Story{
+    pub fn start_scene(&self) -> Scene {
+        let scenes = self.scenes.as_ref().expect("aie");
+        scenes.iter().find(|s| s.id == self.start_scene).expect("msg").clone()
+    }
+    pub fn initial_hp(&self) -> u64 {
+        self.initial_hp.clone()
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Scene {
     id: String,
     title: String,
@@ -19,7 +29,16 @@ pub struct Scene {
     ending: Option<String>
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+impl Scene{
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+    pub fn text(&self) -> String {
+        self.text.clone()
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Choice {
     label: String,
     next: String
