@@ -21,8 +21,8 @@ impl GameState{
     pub fn display_hp(&self){
         println!("pov la vie : {}", self.hp);
     }
-    pub fn choose(&self, choice: i32, story: &Story){
-        // gechan la scene
+    pub fn choose(&mut self, choice: usize, story: &Story){
+        self.scene = story.scenes().as_ref().expect("aie").iter().find(|s| s.id() == self.scene.choices().expect("msg").get(choice).expect("msg").next()).expect("msg").clone();
         self.display_scene();
     }
 }

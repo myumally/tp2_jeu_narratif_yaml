@@ -39,7 +39,7 @@ impl GameCommand for LookCommand {
 
 
 pub struct ChooseCommand{
-    pub choice: i32
+    pub choice: usize
 }
 
 impl GameCommand for ChooseCommand {

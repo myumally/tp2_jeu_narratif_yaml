@@ -18,6 +18,9 @@ impl Story{
     pub fn initial_hp(&self) -> u64 {
         self.initial_hp.clone()
     }
+    pub fn scenes(&self) -> Option<Vec<Scene>> {
+        self.scenes.clone()
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -36,12 +39,24 @@ impl Scene{
     pub fn text(&self) -> String {
         self.text.clone()
     }
+    pub fn choices(&self) -> Option<Vec<Choice>> {
+        self.choices.clone()
+    }
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Choice {
     label: String,
     next: String
+}
+
+impl Choice{
+    pub fn next(&self) -> String {
+        self.next.clone()
+    }
 }
 
 pub fn story_from_file(file: &str) -> Result<Story, StoryError>{

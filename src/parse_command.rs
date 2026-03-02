@@ -11,7 +11,7 @@ pub fn parse_command(line: &str) -> Result<Box<dyn GameCommand>, ParseError>{
         "quit\n" => Ok(Box::new(QuitCommand)),
         _ if line.starts_with("choose ") => {
             let nb = line["choose ".len()..].trim();
-            match nb.parse::<i32>() {
+            match nb.parse::<usize>() {
                 Ok(n) => Ok(Box::new(ChooseCommand { choice: n })),
                 Err(_) => Err(ParseError),
             }
