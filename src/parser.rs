@@ -6,7 +6,7 @@ use std::collections::HashSet;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Story {
     start_scene: String,
-    initial_hp: u64,
+    initial_hp: i64,
     scenes: Option<Vec<Scene>>
 }
 
@@ -15,7 +15,7 @@ impl Story{
         let scenes = self.scenes.as_ref().expect("aie");
         scenes.iter().find(|s| s.id == self.start_scene).expect("msg").clone()
     }
-    pub fn initial_hp(&self) -> u64 {
+    pub fn initial_hp(&self) -> i64 {
         self.initial_hp.clone()
     }
     pub fn scenes(&self) -> Option<Vec<Scene>> {
@@ -28,22 +28,33 @@ pub struct Scene {
     id: String,
     title: String,
     text: String,
+    found_item: Option<String>,
+    hp_delta: Option<i64>,
     choices: Option<Vec<Choice>>,
     ending: Option<String>
 }
 
 impl Scene{
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
     pub fn title(&self) -> String {
         self.title.clone()
     }
     pub fn text(&self) -> String {
         self.text.clone()
     }
+    pub fn found_item(&self) -> Option<String> {
+        self.found_item.clone()
+    }
+    pub fn hp_delta(&self) -> Option<i64> {
+        self.hp_delta.clone()
+    }
     pub fn choices(&self) -> Option<Vec<Choice>> {
         self.choices.clone()
     }
-    pub fn id(&self) -> String {
-        self.id.clone()
+    pub fn ending(&self) -> Option<String> {
+        self.ending.clone()
     }
 }
 
@@ -54,6 +65,9 @@ pub struct Choice {
 }
 
 impl Choice{
+    pub fn label(&self) -> String {
+        self.label.clone()
+    }
     pub fn next(&self) -> String {
         self.next.clone()
     }
