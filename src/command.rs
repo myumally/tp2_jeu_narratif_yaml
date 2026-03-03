@@ -13,7 +13,8 @@ pub trait GameCommand {
 #[derive(Debug)]
 pub enum CommandOutcome {
     Continue,
-    Quit
+    Quit,
+    GameOver
 }
 
 #[derive(Debug)]
@@ -48,8 +49,7 @@ impl GameCommand for ChooseCommand {
             story: &Story,
             state: &mut GameState,
         ) -> Result<CommandOutcome, GameError> {
-        state.choose(self.choice, story);
-        Ok(CommandOutcome::Continue)
+        state.choose(self.choice, story)
     }
 }
 
