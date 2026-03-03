@@ -14,7 +14,9 @@ pub trait GameCommand {
 pub enum CommandOutcome {
     Continue,
     Quit,
-    GameOver
+    GameOver,
+    Victory,
+    End
 }
 
 #[derive(Debug)]
@@ -63,7 +65,7 @@ impl GameCommand for InventoryCommand {
             story: &Story,
             state: &mut GameState,
         ) -> Result<CommandOutcome, GameError> {
-        let _ = state.display_inventary();
+        let _ = state.display_inventory();
         Ok(CommandOutcome::Continue)
     }
 }

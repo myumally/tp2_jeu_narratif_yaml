@@ -22,8 +22,11 @@ impl GameState{
             println!("{}", ending);
         }
     }
-    pub fn display_inventary(&self){
+    pub fn display_inventory(&self){
         println!("ceci est le joli inventaire");
+        for item in &self.inventory{
+            println!("{}", item);
+        }
     }
     pub fn display_hp(&self){
         println!("{} hp left", self.hp);
@@ -32,6 +35,7 @@ impl GameState{
         if let Some(scenes) = story.scenes().as_ref(){
             if let Some(choices) = self.scene.choices(){
                 if let Some(choice) = choices.get(n){
+
                     if let Some(required_item) = choice.required_item(){
                         if !self.inventory.contains(&required_item){
                             println!("You don't have {} in your inventory", required_item);
@@ -39,18 +43,28 @@ impl GameState{
                             return Err(GameError::MissingItem(required_item));
                         }
                     }
+
                     if let Some(next) = scenes.iter().find(|s| s.id() == choice.next()){
+
                         self.scene = next.clone();
                         self.display_scene();
+
                         if let Some(delta) = self.scene.hp_delta(){
                             self.hp += delta;
                             if self.hp <= 0 {                                    
                                 return Ok(CommandOutcome::GameOver);
                             }
                         }
+
+                        if let Some(ending) = self.scene.ending(){
+                            if ending == "victory" {return Ok(CommandOutcome::Victory)}
+                            return Ok(CommandOutcome::End)
+                        }
+
                         if let Some(item) = self.scene.found_item(){
                             self.inventory.push(item);
                         }
+
                         return Ok(CommandOutcome::Continue);
                     }
                 }
