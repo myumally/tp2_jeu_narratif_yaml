@@ -61,7 +61,8 @@ impl Scene{
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Choice {
     label: String,
-    next: String
+    next: String,
+    required_item: Option<String>
 }
 
 impl Choice{
@@ -70,6 +71,9 @@ impl Choice{
     }
     pub fn next(&self) -> String {
         self.next.clone()
+    }
+    pub fn required_item(&self) -> Option<String> {
+        self.required_item.clone()
     }
 }
 

@@ -4,12 +4,12 @@ use crate::{command::{CommandOutcome, GameError}, parser::{Scene, Story}};
 pub struct GameState {
     scene: Scene,
     hp: i64,
-    // inventory: String
+    inventory: Vec<String>
 }
 
 impl GameState{
     pub fn new(scene: Scene, hp: i64) -> Self {
-        Self { scene, hp }
+        Self { scene, hp, inventory: vec![] }
     }
     pub fn display_scene(&self){
         println!("{}\n{}\n", self.scene.title(), self.scene.text());
@@ -32,14 +32,23 @@ impl GameState{
         if let Some(scenes) = story.scenes().as_ref(){
             if let Some(choices) = self.scene.choices(){
                 if let Some(choice) = choices.get(n){
+                    if let Some(required_item) = choice.required_item(){
+                        if !self.inventory.contains(&required_item){
+                            println!("You don't have {} in your inventory", required_item);
+                            return Ok(CommandOutcome::Continue);
+                        }
+                    }
                     if let Some(next) = scenes.iter().find(|s| s.id() == choice.next()){
                         self.scene = next.clone();
                         self.display_scene();
                         if let Some(delta) = self.scene.hp_delta(){
                             self.hp += delta;
-                            if self.hp <= 0 {
+                            if self.hp <= 0 {                                    
                                 return Ok(CommandOutcome::GameOver);
                             }
+                        }
+                        if let Some(item) = self.scene.found_item(){
+                            self.inventory.push(item);
                         }
                         return Ok(CommandOutcome::Continue);
                     }
