@@ -22,6 +22,7 @@ pub enum GameError {
     InvalidChoice,
     NoSuchAction,
     InternalError(String),
+    MissingItem(String)
 }
 
 

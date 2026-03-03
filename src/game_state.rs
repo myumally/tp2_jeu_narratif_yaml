@@ -35,7 +35,8 @@ impl GameState{
                     if let Some(required_item) = choice.required_item(){
                         if !self.inventory.contains(&required_item){
                             println!("You don't have {} in your inventory", required_item);
-                            return Ok(CommandOutcome::Continue);
+                            // return Ok(CommandOutcome::Continue);
+                            return Err(GameError::MissingItem(required_item));
                         }
                     }
                     if let Some(next) = scenes.iter().find(|s| s.id() == choice.next()){
@@ -55,7 +56,8 @@ impl GameState{
                 }
             }
         }
-        println!("invalid choice");
+        println!("Invalid choice");
+        // return Ok(CommandOutcome::Continue);
         return Err(GameError::InvalidChoice);
 
         // self.scene = story.scenes().as_ref().expect("aie").iter().find(|s| s.id() == self.scene.choices().expect("msg").get(choice).expect("msg").next()).expect("msg").clone();
